@@ -39,10 +39,8 @@ public class API {
         }
 
         public void start(double power) {
-            try {
-                rawMotor.setPower(power*direction.i);
-                this.power = power;
-            } catch (Exception e) {/* should never occur */}
+            rawMotor.setPower(power*direction.i);
+            this.power = power;
         }
 
         public void stop() {
@@ -50,10 +48,7 @@ public class API {
         }
 
         public void setPower(double power) {
-            try {
-                rawMotor.setPower(power*direction.i);
-                this.power = power;
-            } catch (Exception e) {/* should never occur */}
+            start(power);
         }
 
         public void setDirection(Direction direction) {
