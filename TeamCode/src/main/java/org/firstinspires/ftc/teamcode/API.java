@@ -11,7 +11,6 @@ public class API {
     private static OpMode opMode;
     public static HubIMU imu;
 
-
     public static void init(final OpMode mode) {
         opMode = mode;
         HardwareMap map = mode.hardwareMap;
@@ -39,15 +38,17 @@ public class API {
         opMode.telemetry.clear();
     }
 
-    public static enum Motor {
+    public enum Motor {
         M0("m0"), M1("m1"), M2("m2"), M3("m3");
         private final String name;
         private DcMotor rawMotor;
         private Direction direction = Direction.FORWARD;
         private double power = 0;
+
         Motor(String name) {
             this.name = name;
         }
+
         void init(HardwareMap map) {
             rawMotor = map.get(DcMotor.class, name);
             rawMotor.setPower(0);
@@ -66,7 +67,11 @@ public class API {
         public void setPower(double power) {
             rawMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rawMotor.setPower(power * direction.i);
+            this.power = power;
+        }
 
+        public void setDirection(Direction direction) {
+            setDirection(direction, false);
         }
 
         public void setDirection(Direction direction, boolean immediate) {
@@ -79,7 +84,7 @@ public class API {
         }
     }
 
-    public static enum Direction {
+    public enum Direction {
         FORWARD(1), REVERSE(-1);
         private final int i;
         Direction(int i) {
@@ -91,6 +96,7 @@ public class API {
         private final BNO055IMU imu;
         private final String name;
         private double zeroPos;
+
         public HubIMU(String name, HardwareMap hardwareMap) {
             this.name = name;
             imu = hardwareMap.get(BNO055IMU.class, name);

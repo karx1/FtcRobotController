@@ -68,6 +68,7 @@ public class Gamepad extends OpMode {
             }
         }
     }
+
     private void move(double power, double turn, double strafe, double speed, boolean verbose) {
         double ffl = (-power + turn + strafe);
         double fbl = (-power + turn - strafe);
