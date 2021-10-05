@@ -17,8 +17,8 @@ public class BasicOpMode extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            m0.setDirection(API.Direction.REVERSE);
-            m2.setDirection(API.Direction.REVERSE);
+            m0.setDirection(API.Direction.REVERSE, false);
+            m2.setDirection(API.Direction.REVERSE, false);
             m0.start(1);
             m2.start(1);
 
