@@ -3,13 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-@TeleOp(name="Gamepad 1.0 IMU 1.0 (VERY NOT STABLE!!)")
-
+@TeleOp(name="Gamepad 1.0 IMU 1.0")
 public class Gamepad extends OpMode {
-    private API.Motor fl = API.Motor.M0;
-    private API.Motor fr = API.Motor.M1;
-    private API.Motor bl = API.Motor.M3;
-    private API.Motor br = API.Motor.M2;
     private double speed = 1;
     private double imuOut = 0;
 
@@ -18,21 +13,19 @@ public class Gamepad extends OpMode {
         API.init(this);
         API.print("Status", "Initializing, please wait");
         API.pause(1);
-        fr.setDirection(API.Direction.REVERSE);
-        br.setDirection(API.Direction.REVERSE);
 
-        fl.resetEncoder(true);
-        fr.resetEncoder(true);
-        bl.resetEncoder(true);
-        br.resetEncoder(true);
+        MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M3, API.Motor.M2);
+
         API.clear();
         API.print("Press play to start");
     }
+
     @Override
     public void start() {
         API.clear();
         API.imu.reset();
     }
+
     @Override
     public void loop() {
         long ms = System.currentTimeMillis()+15;
@@ -42,7 +35,13 @@ public class Gamepad extends OpMode {
         if (!gamepad1.y && gamepad1.left_stick_x == 0) turn = imuOut/180;
         else API.imu.reset();
 
-        move(gamepad1.left_stick_y, turn, gamepad1.right_stick_x, speed, true);
+        MovementAPI.move(gamepad1.left_stick_y, turn, gamepad1.right_stick_x, speed, true);
+
+        API.print(
+            "Speed: " + speed + System.lineSeparator() +
+            "Rotation (degrees, IMU): " + imuOut + System.lineSeparator() +
+            "IMU Active: " + !gamepad1.y
+        );
 
         if (gamepad1.right_bumper) speed = Math.min(speed+0.01, 1);
         else if (gamepad1.left_bumper) speed = Math.max(speed-0.01, 0.2);
@@ -53,43 +52,44 @@ public class Gamepad extends OpMode {
             Thread.sleep(ms);
         } catch (InterruptedException ie) {}
     }
-    private void move(double power, double turn, double strafe, double speed, boolean verbose) {
-        double ffl = (-power + turn + strafe);
-        double fbl = (-power + turn - strafe);
-        /*if (gamepad1.y) {
-            ffl *= 0.65;
-            fbl *= 0.65;
-        }*/
-        double ffr = (-power - turn - strafe);
-        double fbr = (-power - turn + strafe);
 
-        double largest = 1.0;
-        largest = Math.max(largest, Math.abs(ffl));
-        largest = Math.max(largest, Math.abs(fbl));
-        largest = Math.max(largest, Math.abs(ffr));
-        largest = Math.max(largest, Math.abs(fbr));
-
-        ffl/=largest;
-        fbl/=largest;
-        ffr/=largest;
-        fbr/=largest;
-
-        ffl*=speed;
-        fbl*=speed;
-        ffr*=speed;
-        fbr*=speed;
-
-        fl.start(ffl);
-        bl.start(fbl);
-        fr.start(ffr);
-        br.start(fbr);
-
-        if (verbose) API.print("Speed: " + speed + System.lineSeparator() +
-                "Rotation (degrees, IMU): " + imuOut + System.lineSeparator() +
-                "Front Left: " + ffl + System.lineSeparator() +
-                "Back Left: " + fbl + System.lineSeparator() +
-                "Front Right: " + ffr + System.lineSeparator() +
-                "Back Right: " + fbr + System.lineSeparator() +
-                "IMU Active: " + !gamepad1.y);
-    }
+//    private void move(double power, double turn, double strafe, double speed, boolean verbose) {
+//        double ffl = (-power + turn + strafe);
+//        double fbl = (-power + turn - strafe);
+//        /*if (gamepad1.y) {
+//            ffl *= 0.65;
+//            fbl *= 0.65;
+//        }*/
+//        double ffr = (-power - turn - strafe);
+//        double fbr = (-power - turn + strafe);
+//
+//        double largest = 1.0;
+//        largest = Math.max(largest, Math.abs(ffl));
+//        largest = Math.max(largest, Math.abs(fbl));
+//        largest = Math.max(largest, Math.abs(ffr));
+//        largest = Math.max(largest, Math.abs(fbr));
+//
+//        ffl/=largest;
+//        fbl/=largest;
+//        ffr/=largest;
+//        fbr/=largest;
+//
+//        ffl*=speed;
+//        fbl*=speed;
+//        ffr*=speed;
+//        fbr*=speed;
+//
+//        fl.start(ffl);
+//        bl.start(fbl);
+//        fr.start(ffr);
+//        br.start(fbr);
+//
+//        if (verbose) API.print("Speed: " + speed + System.lineSeparator() +
+//                "Rotation (degrees, IMU): " + imuOut + System.lineSeparator() +
+//                "Front Left: " + ffl + System.lineSeparator() +
+//                "Back Left: " + fbl + System.lineSeparator() +
+//                "Front Right: " + ffr + System.lineSeparator() +
+//                "Back Right: " + fbr + System.lineSeparator() +
+//                "IMU Active: " + !gamepad1.y);
+//    }
 }
