@@ -14,9 +14,15 @@ public class API {
     public static void init(final OpMode mode) {
         opMode = mode;
         HardwareMap map = mode.hardwareMap;
+        imu = new HubIMU("imu", map);
 
         for (Motor m : Motor.values()) m.init(map);
         imu = new HubIMU("imu", map);
+    }
+
+    public static void pause(double seconds) {
+        double time = opMode.getRuntime() + seconds;
+        while (opMode.getRuntime()<time);
     }
 
     public static void print(String s) {
@@ -94,8 +100,16 @@ public class API {
          * @param direction the direction to use for the motor
          */
         public void setDirection(Direction direction) {
+            setDirection(direction, false);
+        }
+
+        public void setDirection(Direction direction, boolean immediate) {
             this.direction = direction;
-            start(this.power);
+            if (immediate) start(this.power);
+        }
+
+        public void resetEncoder() {
+            rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
         public void resetEncoder(boolean enable) {
@@ -136,7 +150,6 @@ public class API {
             parameters.loggingTag = "IMU";
             imu.initialize(parameters);
         }
-
         private double[] getAngles() {
             Quaternion quatAngles = imu.getQuaternionOrientation();
             double w = quatAngles.w;
