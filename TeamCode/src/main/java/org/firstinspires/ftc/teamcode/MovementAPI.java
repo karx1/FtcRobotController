@@ -34,10 +34,10 @@ public class MovementAPI {
         blPower /= scale;
         brPower /= scale;
 
-        fl.setPower(flPower);
-        fr.setPower(frPower);
-        bl.setPower(blPower);
-        br.setPower(brPower);
+        fl.start(flPower);
+        fr.start(frPower);
+        bl.start(blPower);
+        br.start(brPower);
 
         if (verbose) API.print(
             "Front Left: " + flPower + System.lineSeparator() +
@@ -53,5 +53,12 @@ public class MovementAPI {
 
     public static void move(double direction, double speed, boolean verbose) {
         move(Math.cos(Math.toRadians(direction)), 0, Math.sin(Math.toRadians(-direction)), speed, verbose);
+    }
+
+    public static void stop() {
+        fl.stop();
+        fl.stop();
+        fl.stop();
+        fl.stop();
     }
 }
