@@ -39,11 +39,6 @@ public class API {
         opMode.telemetry.clear();
     }
 
-    public static void pause(double seconds) {
-        double time = opMode.getRuntime() + seconds;
-        while (opMode.getRuntime()<time);
-    }
-
     public enum Motor {
         M0("m0"), M1("m1"), M2("m2"), M3("m3");
 
@@ -115,10 +110,6 @@ public class API {
         public void resetEncoder(boolean enable) {
             rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            enableEncoder(enable); // in the code this was copy-pasted from enableEncoder was an empty func
-        }
-
-        public void resetEncoder() {
-            rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
 
