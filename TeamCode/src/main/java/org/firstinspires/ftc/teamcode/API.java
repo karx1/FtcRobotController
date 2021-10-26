@@ -183,7 +183,7 @@ public class API {
         }
 
         /**
-         * Adjusts an angle so that -180 <= angle < 180.
+         * Adjusts an angle so that -180 &#60;= angle &#62; 180.
          *
          * @param angle the angle to adjust
          * @return the adjusted angle
