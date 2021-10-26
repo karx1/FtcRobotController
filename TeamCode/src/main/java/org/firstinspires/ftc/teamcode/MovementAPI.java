@@ -12,10 +12,10 @@ public class MovementAPI {
         bl = _bl;
         br = _br;
 
-        fl.setDirection(API.Direction.FORWARD);
-        bl.setDirection(API.Direction.FORWARD);
-        fr.setDirection(API.Direction.REVERSE);
-        br.setDirection(API.Direction.REVERSE);
+        fl.setDirection(API.Direction.REVERSE);
+        bl.setDirection(API.Direction.REVERSE);
+        fr.setDirection(API.Direction.FORWARD);
+        br.setDirection(API.Direction.FORWARD);
     }
 
     public static void move(double power, double turn, double strafe, double speed) {
@@ -23,10 +23,10 @@ public class MovementAPI {
     }
 
     public static void move(double power, double turn, double strafe, double speed, boolean verbose) {
-        double flPower = (power + turn - strafe) * speed;
-        double frPower = (power - turn + strafe) * speed;
-        double blPower = (power + turn + strafe) * speed;
-        double brPower = (power - turn - strafe) * speed;
+        double flPower = (power + turn + strafe) * speed;
+        double frPower = (power - turn - strafe) * speed;
+        double blPower = (power + turn - strafe) * speed;
+        double brPower = (power - turn + strafe) * speed;
 
         double scale = Math.max(1, (Math.abs(power) + Math.abs(turn) + Math.abs(strafe)) * Math.abs(speed)); // shortcut for max(abs([fl,fr,bl,br]))
         flPower /= scale;

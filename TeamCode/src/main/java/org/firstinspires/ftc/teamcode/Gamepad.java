@@ -14,7 +14,7 @@ public class Gamepad extends OpMode {
         API.print("Status", "Initializing, please wait");
         API.pause(1);
 
-        MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M3, API.Motor.M2);
+        MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M2, API.Motor.M3);
 
         API.clear();
         API.print("Press play to start");
@@ -31,11 +31,11 @@ public class Gamepad extends OpMode {
         long ms = System.currentTimeMillis()+15;
         imuOut = API.imu.adjustAngle(API.imu.getHeading());
 
-        double turn = gamepad1.left_stick_x;
-        if (!gamepad1.y && gamepad1.left_stick_x == 0) turn = imuOut/180;
+        double turn = gamepad1.right_stick_x;
+        if (gamepad1.y && gamepad1.left_stick_x == 0) turn = imuOut/180;
         else API.imu.reset();
 
-        MovementAPI.move(gamepad1.left_stick_y, turn, gamepad1.right_stick_x, speed, true);
+        MovementAPI.move(-gamepad1.left_stick_y, turn, gamepad1.left_stick_x, speed, true);
 
         API.print(
             "Speed: " + speed + System.lineSeparator() +
