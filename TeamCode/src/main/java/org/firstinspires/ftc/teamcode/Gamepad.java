@@ -35,7 +35,7 @@ public class Gamepad extends OpMode {
         if (gamepad1.y && gamepad1.left_stick_x == 0) turn = imuOut/180;
         else API.imu.reset();
 
-        MovementAPI.move(-gamepad1.left_stick_y, turn, gamepad1.left_stick_x, speed, true);
+        MovementAPI.move(-gamepad1.left_stick_y, gamepad1.left_stick_x, turn,  speed, true);
 
         API.print(
             "Speed: " + speed + System.lineSeparator() +

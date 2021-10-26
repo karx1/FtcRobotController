@@ -11,6 +11,11 @@ public class API {
     private static OpMode opMode;
     public static HubIMU imu;
 
+    /**
+     * Initializes the API
+     *
+     * @param mode the opmode to initialize with
+     */
     public static void init(final OpMode mode) {
         opMode = mode;
         HardwareMap map = mode.hardwareMap;
@@ -20,21 +25,44 @@ public class API {
         imu = new HubIMU("imu", map);
     }
 
+    /**
+     * Pauses for a given amount of seconds, with sub-millisecond accuracy
+     *
+     * @param seconds the amount of seconds to pause for
+     */
     public static void pause(double seconds) {
         double time = opMode.getRuntime() + seconds;
         while (opMode.getRuntime()<time);
     }
 
+    /**
+     * Prints a line to telemetry
+     *
+     * @param s the text to print
+     *
+     * @see API#print(String, String)
+     */
     public static void print(String s) {
         opMode.telemetry.addLine(s);
         opMode.telemetry.update();
     }
 
+    /**
+     * Prints a value to telemetry, formatted as "caption: value"
+     *
+     * @param caption the caption to print
+     * @param value the value to print
+     *
+     * @see API#print(String)
+     */
     public static void print(String caption, String value) {
         opMode.telemetry.addData(caption, value);
         opMode.telemetry.update();
     }
 
+    /**
+     * Clears the telemetry
+     */
     public static void clear() {
         opMode.telemetry.clear();
     }
@@ -51,20 +79,20 @@ public class API {
             this.name = name;
         }
 
-        void init(HardwareMap map) {
+        private void init(HardwareMap map) {
             rawMotor = map.get(DcMotor.class, name);
             rawMotor.setPower(0);
         }
 
         /**
-         * Starts the motor.
+         * Starts the motor
          */
         public void start() {
             rawMotor.setPower(power * direction.i);
         }
 
         /**
-         * Starts the motor with the specified power.
+         * Starts the motor with the specified power
          *
          * @param power the power to use for the motor
          */
@@ -74,14 +102,14 @@ public class API {
         }
 
         /**
-         * Stops the motor and sets the power to 0.
+         * Stops the motor and sets the power to 0
          */
         public void stop() {
             start(0);
         }
 
         /**
-         * Sets the power without starting the motor.
+         * Sets the power without starting the motor
          *
          * @param power the power to use for the motor
          */
@@ -90,7 +118,7 @@ public class API {
         }
 
         /**
-         * Sets the direction the motor should move in. Does not start the motor.
+         * Sets the direction the motor should move in, without starting the motor
          *
          * @param direction the direction to use for the motor
          */
@@ -103,13 +131,11 @@ public class API {
             if (immediate) start(this.power);
         }
 
+        /**
+         * Resets the encoder
+         */
         public void resetEncoder() {
             rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-
-        public void resetEncoder(boolean enable) {
-            rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            enableEncoder(enable); // in the code this was copy-pasted from enableEncoder was an empty func
         }
     }
 
@@ -141,6 +167,7 @@ public class API {
             parameters.loggingTag = "IMU";
             imu.initialize(parameters);
         }
+
         private double[] getAngles() {
             Quaternion quatAngles = imu.getQuaternionOrientation();
             double w = quatAngles.w;
@@ -165,18 +192,45 @@ public class API {
             return ((angle + 180) % 360) - 180;
         }
 
+        /**
+         * Gets the yaw change since the last time the IMU was reset
+         *
+         * @return the yaw change
+         */
         public double getHeading() {
             return getYaw() - zeroPos;
         }
-        public double getYaw () {
+
+        /**
+         * Gets the yaw
+         *
+         * @return the yaw
+         */
+        public double getYaw() {
             return getAngles()[0];
         }
+
+        /**
+         * Resets the IMU
+         */
         public void reset(){
             zeroPos = getYaw();
         }
+
+        /**
+         * Gets the pitch
+         *
+         * @return the pitch
+         */
         public double getPitch() {
             return getAngles()[1];
         }
+
+        /**
+         * Gets the roll
+         *
+         * @return the roll
+         */
         public double getRoll() {
             return getAngles()[2];
         }

@@ -19,6 +19,6 @@ public class AutonOne extends LinearOpMode {
 
         MovementAPI.move(0, 1, true);
         API.pause(1);
-        for (API.Motor m : API.Motor.values()) m.stop();
+        MovementAPI.stop();
     }
 }
