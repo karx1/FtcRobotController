@@ -71,13 +71,14 @@ public class MovementAPI {
      *
      * @param direction the direction to move in, in degrees, with positive being to the left
      * @param speed the speed to move at
+     * @param verbose whether or not to log extra data to telemetry
      */
     public static void move(double direction, double speed, boolean verbose) {
         move(Math.cos(Math.toRadians(direction)), Math.sin(Math.toRadians(-direction)), 0, speed, verbose);
     }
 
     /**
-     * @see MovementAPI##move(double, double)
+     * @see MovementAPI#move(double, double)
      */
     public static void move(double direction, double speed) {
         move(direction, speed, false);
