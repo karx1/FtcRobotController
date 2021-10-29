@@ -32,7 +32,7 @@ public class Gamepad extends OpMode {
         imuOut = API.imu.adjustAngle(API.imu.getHeading());
 
         double turn = gamepad1.right_stick_x;
-        if (gamepad1.y && gamepad1.left_stick_x == 0) turn = imuOut/180;
+        if (gamepad1.y && gamepad1.right_stick_x == 0) turn = imuOut/180;
         else API.imu.reset();
 
         MovementAPI.move(-gamepad1.left_stick_y, gamepad1.left_stick_x, turn,  speed, true);
