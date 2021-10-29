@@ -122,7 +122,7 @@ public class API {
     }
 
     public static class HubIMU {
-        private final BNO055IMU imu;
+        public final BNO055IMU imu;
         private final String name;
         private double zeroPos;
 
@@ -139,6 +139,7 @@ public class API {
             parameters.pitchMode = BNO055IMU.PitchMode.WINDOWS;
             parameters.loggingEnabled = true;
             parameters.loggingTag = "IMU";
+            parameters.calibrationDataFile = "AdafruitIMUCalibration.json";
             imu.initialize(parameters);
         }
         private double[] getAngles() {

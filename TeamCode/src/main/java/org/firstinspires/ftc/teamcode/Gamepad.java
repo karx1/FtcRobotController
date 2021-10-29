@@ -14,7 +14,7 @@ public class Gamepad extends OpMode {
         API.print("Status", "Initializing, please wait");
         API.pause(1);
 
-        MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M3, API.Motor.M2);
+        MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M2, API.Motor.M3);
 
         API.clear();
         API.print("Press play to start");
