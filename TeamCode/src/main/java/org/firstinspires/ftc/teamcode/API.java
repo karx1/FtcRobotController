@@ -68,7 +68,7 @@ public class API {
     }
 
     public enum Motor {
-        M0("m0"), M1("m1"), M2("m2"), M3("m3");
+        M0("m0"), M1("m1"), M2("m2"), M3("m3"), M4("m4"), M5("m5"), M6("m6"), M7("m7");
 
         private final String name;
         private DcMotor rawMotor;

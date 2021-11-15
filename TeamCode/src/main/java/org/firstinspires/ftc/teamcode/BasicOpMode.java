@@ -9,21 +9,13 @@ public class BasicOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         API.init(this);
-        API.Motor m0 = API.Motor.M0;
-        API.Motor m1 = API.Motor.M1;
-        API.Motor m2 = API.Motor.M2;
-        API.Motor m3 = API.Motor.M3;
+        API.Motor m6 = API.Motor.M6;
+        m6.setDirection(API.Direction.REVERSE);
 
         waitForStart();
 
         while(opModeIsActive()) {
-            m0.setDirection(API.Direction.REVERSE);
-            m2.setDirection(API.Direction.REVERSE);
-            m0.start(1);
-            m2.start(1);
-
-            m1.start(1);
-            m3.start(1);
+            m6.start(1);
         }
     }
 }
