@@ -184,8 +184,9 @@ public class API {
         }
 
         /**
-         * Sets the intended position of the motor, in degrees.
+         * Sets the intended position of the servo, in degrees.
          * Note that intended means it will not necessarily get to this position, but that it will constantly attempt to get there.
+         *
          * @param degrees The intended position.
          */
         public void setPosition(double degrees) {
@@ -194,6 +195,7 @@ public class API {
 
         /**
          * Gets the current position of the servo. Might not match up with setPosition.
+         *
          * @return The position in degrees.
          */
         public double getPosition() {
@@ -201,7 +203,8 @@ public class API {
         }
 
         /**
-         * Starts the motor
+         * Starts the servo
+         *
          * @param power The power to use, from 0 to 1
          */
         public void start(double power) {
@@ -211,7 +214,7 @@ public class API {
         }
 
         /**
-         * Stops the motor by setting the power to 0.
+         * Stops the servo by setting the power to 0.
          */
         public void stop() {
             start(0);
@@ -219,8 +222,9 @@ public class API {
 
         /**
          * Sets the direction of the servo.
+         *
          * @param direction The direction.
-         * @param immediate Whether to start the motor upon setting direction or not.
+         * @param immediate Whether to start the servo upon setting direction or not.
          */
         public void setDirection(Direction direction, boolean immediate) {
             this.direction = direction;
