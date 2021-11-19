@@ -11,11 +11,13 @@ public class BasicOpMode extends LinearOpMode {
         API.init(this);
         API.Motor m6 = API.Motor.M6;
         m6.setDirection(API.Direction.REVERSE);
+        API.Servo s3 = API.Servo.S3;
 
         waitForStart();
 
         while(opModeIsActive()) {
             m6.start(1);
+            s3.start(1);
         }
     }
 }

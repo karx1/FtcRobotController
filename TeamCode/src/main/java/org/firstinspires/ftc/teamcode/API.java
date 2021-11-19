@@ -22,6 +22,7 @@ public class API {
         imu = new HubIMU("imu", map);
 
         for (Motor m : Motor.values()) m.init(map);
+        for (Servo s : Servo.values()) s.init(map);
         imu = new HubIMU("imu", map);
     }
 
@@ -137,6 +138,27 @@ public class API {
         public void resetEncoder() {
             rawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
+
+        /**
+         * Set the zero-power behaviour of the motor.
+         * BRAKE means to immediately apply brakes when power is 0, and FLOAT means to come to a rolling stop.
+         * @param behaviour The behaviour to use
+         */
+        public void setBehaviour(MotorBehaviour behaviour) {
+            if (behaviour.s.equals("brake")) {
+                rawMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            } else {
+                rawMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            }
+        }
+    }
+
+    public enum MotorBehaviour {
+        BRAKE("brake"), FLOAT("float");
+        private final String s;
+        MotorBehaviour(String s) {
+            this.s = s;
+        }
     }
 
     public enum Direction {
@@ -144,6 +166,67 @@ public class API {
         private final int i;
         Direction(int i) {
             this.i = i;
+        }
+    }
+
+    public enum Servo {
+        S0("s0"), S1("s1"), S2("s2"), S3("s3"), S4("s4"), S5("s5"), S6("s6"), S11("s11");
+        private final String name;
+        private com.qualcomm.robotcore.hardware.Servo servo;
+        private Direction direction = Direction.FORWARD;
+        private double power = 0;
+        Servo(String name) {
+            this.name = name;
+        }
+
+        void init(HardwareMap map) {
+            servo = map.get(com.qualcomm.robotcore.hardware.Servo.class, name);
+        }
+
+        /**
+         * Sets the intended position of the motor, in degrees.
+         * Note that intended means it will not necessarily get to this position, but that it will constantly attempt to get there.
+         * @param degrees The intended position.
+         */
+        public void setPosition(double degrees) {
+            servo.setPosition(degrees);
+        }
+
+        /**
+         * Gets the current position of the servo. Might not match up with setPosition.
+         * @return The position in degrees.
+         */
+        public double getPosition() {
+            return servo.getPosition();
+        }
+
+        /**
+         * Starts the motor
+         * @param power The power to use, from 0 to 1
+         */
+        public void start(double power) {
+            this.power = power;
+            power*=direction.i;
+            servo.setPosition(power/2+0.5);
+        }
+
+        /**
+         * Stops the motor by setting the power to 0.
+         */
+        public void stop() {
+            start(0);
+        }
+
+        /**
+         * Sets the direction of the servo.
+         * @param direction The direction.
+         * @param immediate Whether to start the motor upon setting direction or not.
+         */
+        public void setDirection(Direction direction, boolean immediate) {
+            this.direction = direction;
+            if (immediate) {
+                start(power);
+            }
         }
     }
 
