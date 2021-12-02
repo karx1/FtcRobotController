@@ -141,8 +141,9 @@ public class API {
 
         /**
          * Set the zero-power behaviour of the motor.
+         *
          * BRAKE means to immediately apply brakes when power is 0, and FLOAT means to come to a rolling stop.
-         * @param behaviour The behaviour to use
+         * @param behaviour the behaviour to use
          */
         public void setBehaviour(MotorBehaviour behaviour) {
             if (behaviour.s.equals("brake")) {
@@ -152,14 +153,44 @@ public class API {
             }
         }
 
-        public void controlWithTwoButtons(boolean positiveControl, boolean negativeControl) {
-            if (positiveControl && !negativeControl) this.start(1);
-            else if (negativeControl && !positiveControl) this.start(-1);
+        /**
+         * Moves the motor forward or backward at the provided speed based on the button inputs
+         *
+         * @param positiveControl the button used to move the motor forward
+         * @param negativeControl the button used to move the motor backward
+         */
+        public void controlWithTwoButtons(boolean positiveControl, boolean negativeControl, double speed) {
+            if (positiveControl && !negativeControl) this.start(speed);
+            else if (negativeControl && !positiveControl) this.start(-speed);
             else this.stop();
         }
 
+        /**
+         * Moves the motor forward or backward at maximum speed based on the button inputs
+         *
+         * @param positiveControl the button used to move the motor forward
+         * @param negativeControl the button used to move the motor backward
+         */
+        public void controlWithTwoButtons(boolean positiveControl, boolean negativeControl) {
+            this.controlWithTwoButtons(positiveControl, negativeControl, 1);
+        }
+
+        /**
+         * Moves the motor forward at the provided speed if the button is pressed.
+         *
+         * @param positiveControl the button used to move forward
+         */
+        public void controlWithOneButton(boolean positiveControl, double speed) {
+            this.controlWithTwoButtons(positiveControl, false, speed);
+        }
+
+        /**
+         * Moves the motor forward at maximum speed if the button is pressed.
+         *
+         * @param positiveControl the button used to move forward
+         */
         public void controlWithOneButton(boolean positiveControl) {
-            this.controlWithTwoButtons(positiveControl, false);
+            this.controlWithOneButton(positiveControl, 1);
         }
     }
 
