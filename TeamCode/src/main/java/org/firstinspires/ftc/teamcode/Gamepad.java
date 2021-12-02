@@ -8,7 +8,9 @@ public class Gamepad extends OpMode {
     private double speed = 1;
     private double prevSpeed = 1;
     private double imuOut = 0;
-    private API.Motor intake = API.Motor.M4;
+    private API.Motor intakeMotor = API.Motor.M4;
+    private API.Motor liftMotor = API.Motor.M5;
+    private API.Motor carouselMotor = API.Motor.M6;
 
     @Override
     public void init() {
@@ -26,7 +28,7 @@ public class Gamepad extends OpMode {
     public void start() {
         API.clear();
         API.imu.reset();
-        intake.setPower(1);
+        intakeMotor.setDirection(API.Direction.REVERSE);
     }
 
     @Override
@@ -49,13 +51,9 @@ public class Gamepad extends OpMode {
         if (gamepad1.right_bumper) speed = Math.min(speed+0.01, 1);
         else if (gamepad1.left_bumper) speed = Math.max(speed-0.01, 0.2);
 
-        if (gamepad1.a) {
-            intake.setDirection(API.Direction.REVERSE, true);
-        } else if (gamepad1.b) {
-            intake.setDirection(API.Direction.FORWARD, true);
-        } else {
-            intake.stop();
-        }
+        intakeMotor.controlWithTwoButtons(gamepad1.a, gamepad1.b);
+        liftMotor.controlWithTwoButtons(gamepad1.dpad_up, gamepad1.dpad_down);
+        carouselMotor.controlWithOneButton(gamepad1.x);
 
         ms-=System.currentTimeMillis();
         if (ms>5) try {

@@ -151,6 +151,16 @@ public class API {
                 rawMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             }
         }
+
+        public void controlWithTwoButtons(boolean positiveControl, boolean negativeControl) {
+            if (positiveControl && !negativeControl) this.start(1);
+            else if (negativeControl && !positiveControl) this.start(-1);
+            else this.stop();
+        }
+
+        public void controlWithOneButton(boolean positiveControl) {
+            this.controlWithTwoButtons(positiveControl, false);
+        }
     }
 
     public enum MotorBehaviour {

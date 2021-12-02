@@ -1,3 +1,6 @@
+# fork ds store
+.DS_Store
+
 # Built application files
 *.apk
 *.aar
