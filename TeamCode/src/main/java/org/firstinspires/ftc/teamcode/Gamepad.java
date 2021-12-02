@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 @TeleOp(name="Gamepad 1.0 IMU 1.0")
 public class Gamepad extends OpMode {
     private double speed = 1;
+    private double prevSpeed = 1;
     private double imuOut = 0;
+    private API.Motor intake = API.Motor.M4;
 
     @Override
     public void init() {
@@ -24,6 +26,7 @@ public class Gamepad extends OpMode {
     public void start() {
         API.clear();
         API.imu.reset();
+        intake.setPower(1);
     }
 
     @Override
@@ -35,17 +38,24 @@ public class Gamepad extends OpMode {
         if (gamepad1.y && gamepad1.right_stick_x == 0) turn = imuOut/180;
         else API.imu.reset();
 
-        MovementAPI.move(-gamepad1.left_stick_y, gamepad1.left_stick_x, turn,  speed, true);
+        MovementAPI.move(-gamepad1.left_stick_y, gamepad1.left_stick_x, turn,  speed, false);
 
         API.print(
             "Speed: " + speed + System.lineSeparator() +
             "Rotation (degrees, IMU): " + imuOut + System.lineSeparator() +
             "IMU Active: " + !gamepad1.y
         );
-
+        
         if (gamepad1.right_bumper) speed = Math.min(speed+0.01, 1);
         else if (gamepad1.left_bumper) speed = Math.max(speed-0.01, 0.2);
-        else if (gamepad1.x) speed = 0.35;
+
+        if (gamepad1.a) {
+            intake.setDirection(API.Direction.REVERSE, true);
+        } else if (gamepad1.b) {
+            intake.setDirection(API.Direction.FORWARD, true);
+        } else {
+            intake.stop();
+        }
 
         ms-=System.currentTimeMillis();
         if (ms>5) try {

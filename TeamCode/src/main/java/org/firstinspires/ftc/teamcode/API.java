@@ -106,7 +106,7 @@ public class API {
          * Stops the motor and sets the power to 0
          */
         public void stop() {
-            start(0);
+            rawMotor.setPower(0);
         }
 
         /**
@@ -129,7 +129,7 @@ public class API {
 
         public void setDirection(Direction direction, boolean immediate) {
             this.direction = direction;
-            if (immediate) start(this.power);
+            if (immediate) start();
         }
 
         /**
