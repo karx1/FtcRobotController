@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+@TeleOp(name="AAAAAAAAA")
 public class TotallyGamepaad extends OpMode {
     private double speed = 1;
     private API.Motor intakeMotor = API.Motor.M4;

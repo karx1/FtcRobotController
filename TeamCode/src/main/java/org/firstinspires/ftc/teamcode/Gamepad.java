@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-@TeleOp(name="Gamepad 1.0 IMU 1.0")
+@TeleOp(name="Gamepad 1.0 IMU 1.0 t")
 public class Gamepad extends OpMode {
     private double speed = 1;
     private double prevSpeed = 1;
