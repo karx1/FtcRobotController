@@ -51,9 +51,9 @@ public class Gamepad extends OpMode {
         if (gamepad1.right_bumper) speed = Math.min(speed+0.01, 1);
         else if (gamepad1.left_bumper) speed = Math.max(speed-0.01, 0.2);
 
-        intakeMotor.controlWithTwoButtons(gamepad1.a, gamepad1.b);
-        liftMotor.controlWithTwoButtons(gamepad1.dpad_up, gamepad1.dpad_down);
-        carouselMotor.controlWithOneButton(gamepad1.x);
+        intakeMotor.controlWithTwoButtons(gamepad2.a, gamepad2.b);
+        liftMotor.controlWithTwoButtons(gamepad2.dpad_up, gamepad2.dpad_down, 0.25);
+        carouselMotor.controlWithTwoButtons(gamepad2.x, gamepad2.y);
 
         ms-=System.currentTimeMillis();
         if (ms>5) try {
