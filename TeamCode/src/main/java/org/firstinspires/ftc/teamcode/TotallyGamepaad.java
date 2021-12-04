@@ -25,6 +25,7 @@ public class TotallyGamepaad extends OpMode {
     @Override
     public void start() {
         API.clear();
+        liftMotor.setDirection(API.Direction.REVERSE, false);
     }
 
     @Override
@@ -35,6 +36,6 @@ public class TotallyGamepaad extends OpMode {
 
         intakeMotor.controlWithTwoButtons(gamepad2.a, gamepad2.b);
         liftMotor.controlWithTwoButtons(gamepad2.dpad_up, gamepad2.dpad_down, gamepad2.left_bumper ? 0.6 : 0.25);
-        carouselMotor.controlWithTwoButtons(gamepad2.x, gamepad2.y);
+        carouselMotor.controlWithTwoButtons(gamepad2.x, gamepad2.y, 0.75);
     }
 }
