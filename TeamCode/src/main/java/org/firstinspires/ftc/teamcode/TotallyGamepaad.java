@@ -30,11 +30,11 @@ public class TotallyGamepaad extends OpMode {
     @Override
     public void loop() {
         MovementAPI.move(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x,  gamepad1.y ? 1 : gamepad1.a ? 0.35 : speed, false);
-        if (gamepad1.right_bumper) speed = Math.min(speed+0.01, 1);
-        else if (gamepad1.left_bumper) speed = Math.max(speed-0.01, 0.2);
+        if (gamepad1.right_bumper) speed = Math.min(speed+0.002, 1);
+        else if (gamepad1.left_bumper) speed = Math.max(speed-0.002, 0.2);
 
         intakeMotor.controlWithTwoButtons(gamepad2.a, gamepad2.b);
-        liftMotor.controlWithTwoButtons(gamepad2.dpad_up, gamepad2.dpad_down, 0.25);
+        liftMotor.controlWithTwoButtons(gamepad2.dpad_up, gamepad2.dpad_down, gamepad2.left_bumper ? 0.6 : 0.25);
         carouselMotor.controlWithTwoButtons(gamepad2.x, gamepad2.y);
     }
 }
