@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous(name="Autonomous 0.00000000000000000000000002 WORKING????", preselectTeleOp="AAAAAAAAA")
-public class AutonOne extends LinearOpMode {
+public class AutonThree extends LinearOpMode {
+    private API.Motor carouselMotor = API.Motor.M6;
     @Override
     public void runOpMode() {
         API.init(this);
@@ -20,5 +20,6 @@ public class AutonOne extends LinearOpMode {
         MovementAPI.move(0, 1, true);
         API.pause(1);
         MovementAPI.stop();
+        carouselMotor.start(0.6);
     }
 }
