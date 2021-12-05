@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 public class API {
@@ -33,7 +34,8 @@ public class API {
      */
     public static void pause(double seconds) {
         double time = opMode.getRuntime() + seconds;
-        while (opMode.getRuntime()<time);
+        //noinspection StatementWithEmptyBody
+        while (opMode.getRuntime()<time); /* no empty while loop here! */
     }
 
     /**
@@ -116,6 +118,10 @@ public class API {
          */
         public void setPower(double power) {
             this.power = power;
+        }
+
+        public double getPower() {
+            return this.power;
         }
 
         /**

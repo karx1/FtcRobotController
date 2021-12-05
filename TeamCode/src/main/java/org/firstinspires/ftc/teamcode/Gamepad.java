@@ -58,7 +58,9 @@ public class Gamepad extends OpMode {
         ms-=System.currentTimeMillis();
         if (ms>5) try {
             Thread.sleep(ms);
-        } catch (InterruptedException ie) {}
+        } catch (InterruptedException ie) {
+            API.print("Why are we here? Just to suffer?");
+        }
     }
 
 //    private void move(double power, double turn, double strafe, double speed, boolean verbose) {
