@@ -34,7 +34,6 @@ public class API {
      */
     public static void pause(double seconds) {
         double time = opMode.getRuntime() + seconds;
-        //noinspection StatementWithEmptyBody
         while (opMode.getRuntime()<time); /* no empty while loop here! */
     }
 

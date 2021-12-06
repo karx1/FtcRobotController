@@ -6,6 +6,11 @@ public class MovementAPI {
     private static API.Motor bl;
     private static API.Motor br;
 
+    public static API.Motor getFL() { return fl; }
+    public static API.Motor getFR() { return fr; }
+    public static API.Motor getBL() { return bl; }
+    public static API.Motor getBR() { return br; }
+
     /**
      * Initializes the API
      *

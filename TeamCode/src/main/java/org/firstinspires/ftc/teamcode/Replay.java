@@ -12,6 +12,11 @@ import java.io.File;
 
 @Autonomous(name="Autonomous Replay v1.0.0", preselectTeleOp = "AAAAAAAAA")
 public class Replay extends OpMode {
+    private API.Motor fl = API.Motor.M0;
+    private API.Motor fr = API.Motor.M1;
+    private API.Motor bl = API.Motor.M2;
+    private API.Motor br = API.Motor.M3;
+
     private API.Motor intakeMotor = API.Motor.M4;
     private API.Motor liftMotor = API.Motor.M5;
     private API.Motor carouselMotor = API.Motor.M6;
@@ -42,7 +47,7 @@ public class Replay extends OpMode {
         try {
             recordingJSON = new JSONObject(ReadWriteFile.readFile(recordingFile));
         } catch (JSONException e) {
-            API.print("Why are we here? Just to suffer?");
+            somethingWentWrong(e);
         }
     }
 
@@ -55,15 +60,22 @@ public class Replay extends OpMode {
 
             if (this.getRuntime() * 1000 < currentData.getDouble("time")) return;
 
-            JSONObject currentMovementData = currentData.getJSONObject("movement");
-            MovementAPI.move(
-                    currentMovementData.getDouble("y"),
-                    currentMovementData.getDouble("x"),
-                    currentMovementData.getDouble("turn"),
-                    currentMovementData.getDouble("speed"),
-                    true
-            );
+//            JSONObject currentMovementData = currentData.getJSONObject("movement");
+//            MovementAPI.move(
+//                    currentMovementData.getDouble("y"),
+//                    currentMovementData.getDouble("x"),
+//                    currentMovementData.getDouble("turn"),
+//                    currentMovementData.getDouble("speed"),
+//                    true
+//            );
 
+            // Movement
+            fl.setPower(currentData.getDouble("fl"));
+            fr.setPower(currentData.getDouble("fr"));
+            bl.setPower(currentData.getDouble("bl"));
+            br.setPower(currentData.getDouble("br"));
+
+            // Auxiliary
             intakeMotor.start(currentData.getDouble("intake"));
             liftMotor.start(currentData.getDouble("lift"));
             carouselMotor.start(currentData.getDouble("carousel"));
@@ -75,26 +87,16 @@ public class Replay extends OpMode {
                 nextIndex = -1;
             }
         } catch (JSONException e) {
-            API.print("Why are we here? Just to suffer?");
+            somethingWentWrong(e);
         }
+    }
 
-//        try {
-//            outputJSON.getJSONArray("recordedData").put(
-//                    new JSONObject()
-//                    .put("movement",
-//                            new JSONObject()
-//                            .put("x", gamepad1.left_stick_x)
-//                            .put("y", -gamepad1.left_stick_y)
-//                            .put("turn", gamepad1.right_stick_x)
-//                            .put("speed", speed)
-//                    )
-//                    .put("intake", intakeMotor.getPower())
-//                    .put("lift", liftMotor.getPower())
-//                    .put("carousel", carouselMotor.getPower())
-//                    .put("time", this.getRuntime() * 1000)
-//            );
-//        } catch (JSONException e) {
-//            API.print("Why are we here? Just to suffer?");
-//        }
+    public void somethingWentWrong(Exception e) {
+        API.print(
+                "Why are we here? Just to suffer?" + System.lineSeparator() +
+                e.getMessage()
+        );
+        this.requestOpModeStop();
+        nextIndex = -1;
     }
 }

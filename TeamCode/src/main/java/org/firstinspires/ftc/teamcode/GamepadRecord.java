@@ -68,16 +68,26 @@ public class GamepadRecord extends OpMode {
 
         try {
             JSONObject currentData = new JSONObject()
-                    .put("movement",
-                            new JSONObject()
-                                    .put("x", gamepad1.left_stick_x)
-                                    .put("y", -gamepad1.left_stick_y)
-                                    .put("turn", gamepad1.right_stick_x)
-                                    .put("speed", speed)
-                    )
+//                    .put("movement",
+//                            new JSONObject()
+//                                    .put("x", gamepad1.left_stick_x)
+//                                    .put("y", -gamepad1.left_stick_y)
+//                                    .put("turn", gamepad1.right_stick_x)
+//                                    .put("speed", speed)
+//                    )
+
+                    // Movement
+                    .put("fl", MovementAPI.getFL().getPower())
+                    .put("fr", MovementAPI.getFR().getPower())
+                    .put("bl", MovementAPI.getBL().getPower())
+                    .put("br", MovementAPI.getBR().getPower())
+
+                    // Auxiliary
                     .put("intake", intakeMotor.getPower())
                     .put("lift", liftMotor.getPower())
                     .put("carousel", carouselMotor.getPower())
+
+                    // Time
                     .put("time", this.getRuntime() * 1000);
 
             if (!currentData.toString().equals(outputJSON.getJSONArray("recordedData").get(currentIndex - 1).toString()))
