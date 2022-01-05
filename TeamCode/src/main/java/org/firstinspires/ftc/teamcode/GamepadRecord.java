@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-@TeleOp(name="Gamepad Recorder v1.0.0")
+@TeleOp(name="Gamepad Recorder v1.0.1")
 public class GamepadRecord extends OpMode {
     private double speed = 1;
     private API.Motor intakeMotor = API.Motor.M4;
@@ -31,14 +31,6 @@ public class GamepadRecord extends OpMode {
 
         MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M2, API.Motor.M3);
 
-        API.clear();
-        API.print("Press play to start");
-    }
-
-    @Override
-    public void start() {
-        API.clear();
-        API.imu.reset();
         intakeMotor.setDirection(API.Direction.REVERSE);
         outputFile = AppUtil.getInstance().getSettingsFile(outputFileName);
         try {
@@ -46,6 +38,15 @@ public class GamepadRecord extends OpMode {
         } catch (JSONException e) {
             API.print("Why are we here? Just to suffer?");
         }
+
+        API.clear();
+        API.print("Press play to start");
+    }
+
+    @Override
+    public void start() {
+        API.clear();
+        this.resetStartTime();
     }
 
     @Override
@@ -68,39 +69,39 @@ public class GamepadRecord extends OpMode {
 
         try {
             JSONObject currentData = new JSONObject()
-//                    .put("movement",
-//                            new JSONObject()
-//                                    .put("x", gamepad1.left_stick_x)
-//                                    .put("y", -gamepad1.left_stick_y)
-//                                    .put("turn", gamepad1.right_stick_x)
-//                                    .put("speed", speed)
-//                    )
-
-                    // Movement
-                    .put("fl", MovementAPI.getFL().getPower())
-                    .put("fr", MovementAPI.getFR().getPower())
-                    .put("bl", MovementAPI.getBL().getPower())
-                    .put("br", MovementAPI.getBR().getPower())
-
-                    // Auxiliary
-                    .put("intake", intakeMotor.getPower())
-                    .put("lift", liftMotor.getPower())
-                    .put("carousel", carouselMotor.getPower())
-
                     // Time
-                    .put("time", this.getRuntime() * 1000);
+                    .put("time", this.getRuntime() * 1000)
 
-            if (!currentData.toString().equals(outputJSON.getJSONArray("recordedData").get(currentIndex - 1).toString()))
+                    // Data
+                    .put("data", new JSONObject()
+                        // Movement
+                        .put("fl", MovementAPI.getFL().getPower())
+                        .put("fr", MovementAPI.getFR().getPower())
+                        .put("bl", MovementAPI.getBL().getPower())
+                        .put("br", MovementAPI.getBR().getPower())
+
+                        // Auxiliary
+                        .put("intake", intakeMotor.getPower())
+                        .put("lift", liftMotor.getPower())
+                        .put("carousel", carouselMotor.getPower())
+                    );
+
+            if (
+                    currentIndex == 0 ||
+                    !currentData.get("data").toString()
+                    .equals(
+                    outputJSON.getJSONArray("recordedData").getJSONObject(currentIndex - 1).get("data").toString())
+            )
                 outputJSON.getJSONArray("recordedData").put(currentIndex++, currentData);
         } catch (JSONException e) {
-            API.print("Why are we here? Just to suffer?");
+            API.print("Why are we here? Just to suffer?" + System.lineSeparator() + e.getMessage());
         }
 
         ms-=System.currentTimeMillis();
         if (ms>5) try {
             Thread.sleep(ms);
         } catch (InterruptedException ie) {
-            API.print("Why are we here? Just to suffer?");
+            API.print("Why are we here? Just to suffer? (Thread.sleep error)");
         }
 
         if (gamepad1.guide && !prevGuide) {

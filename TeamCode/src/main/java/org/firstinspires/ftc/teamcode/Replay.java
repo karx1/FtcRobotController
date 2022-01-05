@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-@Autonomous(name="Autonomous Replay v1.0.0", preselectTeleOp = "AAAAAAAAA")
+@Autonomous(name="Autonomous Replay v1.0.1", preselectTeleOp = "AAAAAAAAA")
 public class Replay extends OpMode {
     private API.Motor fl = API.Motor.M0;
     private API.Motor fr = API.Motor.M1;
@@ -34,6 +34,14 @@ public class Replay extends OpMode {
 
         MovementAPI.init(API.Motor.M0, API.Motor.M1, API.Motor.M2, API.Motor.M3);
 
+        intakeMotor.setDirection(API.Direction.REVERSE);
+        recordingFile = AppUtil.getInstance().getSettingsFile(recordingFileName);
+        try {
+            recordingJSON = new JSONObject(ReadWriteFile.readFile(recordingFile));
+        } catch (JSONException e) {
+            somethingWentWrong(e);
+        }
+
         API.clear();
         API.print("Press play to start");
     }
@@ -42,13 +50,7 @@ public class Replay extends OpMode {
     public void start() {
         API.clear();
         API.imu.reset();
-        intakeMotor.setDirection(API.Direction.REVERSE);
-        recordingFile = AppUtil.getInstance().getSettingsFile(recordingFileName);
-        try {
-            recordingJSON = new JSONObject(ReadWriteFile.readFile(recordingFile));
-        } catch (JSONException e) {
-            somethingWentWrong(e);
-        }
+        this.resetStartTime();
     }
 
     @Override
@@ -56,18 +58,10 @@ public class Replay extends OpMode {
         if (nextIndex == -1) return;
 
         try {
-            JSONObject currentData = recordingJSON.getJSONArray("recordingData").getJSONObject(nextIndex);
+            JSONObject currentListElement = recordingJSON.getJSONArray("recordedData").getJSONObject(nextIndex);
+            JSONObject currentData = currentListElement.getJSONObject("data");
 
-            if (this.getRuntime() * 1000 < currentData.getDouble("time")) return;
-
-//            JSONObject currentMovementData = currentData.getJSONObject("movement");
-//            MovementAPI.move(
-//                    currentMovementData.getDouble("y"),
-//                    currentMovementData.getDouble("x"),
-//                    currentMovementData.getDouble("turn"),
-//                    currentMovementData.getDouble("speed"),
-//                    true
-//            );
+            if (this.getRuntime() * 1000 < currentListElement.getDouble("time")) return;
 
             // Movement
             fl.setPower(currentData.getDouble("fl"));
@@ -82,7 +76,7 @@ public class Replay extends OpMode {
 
             nextIndex++;
 
-            if(nextIndex >= recordingJSON.getJSONArray("recordingData").length()){
+            if(nextIndex >= recordingJSON.getJSONArray("recordedData").length()){
                 this.requestOpModeStop();
                 nextIndex = -1;
             }
