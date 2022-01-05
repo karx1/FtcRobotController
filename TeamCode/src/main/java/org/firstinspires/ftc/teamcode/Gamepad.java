@@ -62,44 +62,4 @@ public class Gamepad extends OpMode {
             API.print("Why are we here? Just to suffer?");
         }
     }
-
-//    private void move(double power, double turn, double strafe, double speed, boolean verbose) {
-//        double ffl = (-power + turn + strafe);
-//        double fbl = (-power + turn - strafe);
-//        /*if (gamepad1.y) {
-//            ffl *= 0.65;
-//            fbl *= 0.65;
-//        }*/
-//        double ffr = (-power - turn - strafe);
-//        double fbr = (-power - turn + strafe);
-//
-//        double largest = 1.0;
-//        largest = Math.max(largest, Math.abs(ffl));
-//        largest = Math.max(largest, Math.abs(fbl));
-//        largest = Math.max(largest, Math.abs(ffr));
-//        largest = Math.max(largest, Math.abs(fbr));
-//
-//        ffl/=largest;
-//        fbl/=largest;
-//        ffr/=largest;
-//        fbr/=largest;
-//
-//        ffl*=speed;
-//        fbl*=speed;
-//        ffr*=speed;
-//        fbr*=speed;
-//
-//        fl.start(ffl);
-//        bl.start(fbl);
-//        fr.start(ffr);
-//        br.start(fbr);
-//
-//        if (verbose) API.print("Speed: " + speed + System.lineSeparator() +
-//                "Rotation (degrees, IMU): " + imuOut + System.lineSeparator() +
-//                "Front Left: " + ffl + System.lineSeparator() +
-//                "Back Left: " + fbl + System.lineSeparator() +
-//                "Front Right: " + ffr + System.lineSeparator() +
-//                "Back Right: " + fbr + System.lineSeparator() +
-//                "IMU Active: " + !gamepad1.y);
-//    }
 }
