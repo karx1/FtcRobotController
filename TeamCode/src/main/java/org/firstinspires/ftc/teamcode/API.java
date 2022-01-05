@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 public class API {
@@ -366,6 +365,89 @@ public class API {
          */
         public double getRoll() {
             return getAngles()[2];
+        }
+    }
+
+    public enum Gamepad {
+        G1(1), G2(2);
+        private final int number;
+        private com.qualcomm.robotcore.hardware.Gamepad gamepad;
+        Gamepad(int number) { this.number = number; }
+
+        void init(OpMode opMode) { this.gamepad = this.number == 1 ? opMode.gamepad1 : opMode.gamepad2; }
+
+        // Sticks
+        public double getLeftStickX() { return this.gamepad.left_stick_x; }
+        public double getLeftStickY() { return this.gamepad.left_stick_y; }
+        public double getRightStickX() { return this.gamepad.right_stick_x; }
+        public double getRightStickY() { return this.gamepad.right_stick_y; }
+
+        // ABXY
+        public boolean getA() { return this.gamepad.a; }
+        public boolean getB() { return this.gamepad.b; }
+        public boolean getX() { return this.gamepad.x; }
+        public boolean getY() { return this.gamepad.y; }
+        public int getABXY() {
+            return
+                    0b1000 * (this.getA() ? 1 : 0) +
+                    0b0100 * (this.getB() ? 1 : 0) +
+                    0b0010 * (this.getX() ? 1 : 0) +
+                    0b0001 * (this.getY() ? 1 : 0);
+        }
+
+        // D-Pad
+        public boolean getDPadUp() { return this.gamepad.dpad_up; }
+        public boolean getDPadDown() { return this.gamepad.dpad_down; }
+        public boolean getDPadLeft() { return this.gamepad.dpad_left; }
+        public boolean getDPadRight() { return this.gamepad.dpad_right; }
+        public int getDPad() {
+            return
+                    0b1000 * (this.getDPadUp() ? 1 : 0) +
+                    0b0100 * (this.getDPadDown() ? 1 : 0) +
+                    0b0010 * (this.getDPadLeft() ? 1 : 0) +
+                    0b0001 * (this.getDPadRight() ? 1 : 0);
+        }
+
+        // Bumpers
+        public boolean getLB() { return this.gamepad.left_bumper; }
+        public boolean getRB() { return this.gamepad.right_bumper; }
+        public int getBumpers() {
+            return
+                    0b10 * (this.getLB() ? 1 : 0) +
+                    0b01 * (this.getRB() ? 1 : 0);
+        }
+
+        // Triggers
+        public double getLT() { return this.gamepad.left_trigger; }
+        public double getRT() { return this.gamepad.right_trigger; }
+
+        // Stick clicks
+        public boolean getL3() { return this.gamepad.left_stick_button; }
+        public boolean getR3() { return this.gamepad.right_stick_button; }
+        public double getStickClicks() {
+            return
+                    0b10 * (this.getL3() ? 1 : 0) +
+                            0b01 * (this.getR3() ? 1 : 0);
+        }
+
+        // Misc
+        public boolean getGuide() { return this.gamepad.guide; }
+        public boolean getStart() { return this.gamepad.start; }
+        public boolean getBack() { return this.gamepad.back; }
+        public int getMiscButtons() {
+            return
+                    0b100 * (this.getGuide() ? 1 : 0) +
+                    0b010 * (this.getStart() ? 1 : 0) +
+                    0b001 * (this.getBack() ? 1 : 0);
+        }
+
+        public double getAllButtons() {
+            return
+                    0b000000000000001 * this.getABXY() +
+                    0b000000000010000 * this.getDPad() +
+                    0b000000100000000 * this.getBumpers() +
+                    0b000010000000000 * this.getStickClicks() +
+                    0b001000000000000 * this.getMiscButtons();
         }
     }
 }
